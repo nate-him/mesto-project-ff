@@ -3,7 +3,7 @@ import { initialCards } from "./cards.js";
 const cardsContainer = document.querySelector('.places__list');
 const cardTemplate = document.querySelector('#card-template').content;
 
-const createCard = (card) => {
+const createCard = (card, removeCard) => {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
 
   const cardImage = cardElement.querySelector('.card__image');
@@ -14,7 +14,7 @@ const createCard = (card) => {
   cardHeader.textContent = card.name;
 
   const deleteButton = cardElement.querySelector('.card__delete-button');
-  deleteButton.addEventListener('click', deleteCard);
+  deleteButton.addEventListener('click', removeCard);
 
   return cardElement;
 }
@@ -27,7 +27,7 @@ const deleteCard = (evt) => {
 
 const loadInitialCards = (cards) => {
   cards.forEach((card) => {
-    const newCard = createCard(card);
+    const newCard = createCard(card, deleteCard);
     cardsContainer.append(newCard);
   })
 }
