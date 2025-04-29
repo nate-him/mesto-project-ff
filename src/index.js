@@ -4,6 +4,9 @@ import { initialCards } from "./scripts/cards.js";
 
 const cardsContainer = document.querySelector('.places__list');
 const cardTemplate = document.querySelector('#card-template').content;
+const editProfileButton = document.querySelector('.profile__edit-button');
+const popup = document.querySelector('.popup');
+const closePopupButton = document.querySelector('.popup__close');
 
 const createCard = (card, removeCard) => {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
@@ -35,3 +38,29 @@ const loadInitialCards = (cards) => {
 }
 
 loadInitialCards(initialCards);
+
+const closePopupOnEscape = (evt) => {
+  if (evt.key === "Escape") {
+    closePopup();
+  }
+}
+
+const closePopupOnOverlay = (evt) => {
+  if (evt.target === evt.currentTarget) {
+    closePopup();
+  }
+}
+
+const openPopup = () => {
+  popup.classList.add('popup_is-opened');
+  popup.addEventListener('click', closePopupOnOverlay);
+  closePopupButton.addEventListener('click', closePopup);
+  document.addEventListener('keydown', closePopupOnEscape);
+}
+
+const closePopup = () => {
+  popup.classList.remove('popup_is-opened');
+  document.removeEventListener('keydown', closePopupOnEscape);
+}
+
+editProfileButton.addEventListener('click', openPopup);
