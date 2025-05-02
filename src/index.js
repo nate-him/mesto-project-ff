@@ -1,7 +1,7 @@
 import './pages/index.css';
 
 import { initialCards } from './scripts/cards.js';
-import { createCard, deleteCard } from './components/card.js';
+import { createCard, deleteCard, likeCard } from './components/card.js';
 import { openPopup } from './components/modal.js';
 
 const cardsContainer = document.querySelector('.places__list');
@@ -10,7 +10,7 @@ const editPopup = document.querySelector('.popup_type_edit');
 
 const loadInitialCards = (cards) => {
   cards.forEach((card) => {
-    const newCard = createCard(card, deleteCard);
+    const newCard = createCard(card, deleteCard, likeCard);
     cardsContainer.append(newCard);
   });
 };
