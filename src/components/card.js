@@ -1,3 +1,5 @@
+import { getImageAttributes } from './image.js';
+
 const cardTemplate = document.querySelector('#card-template').content;
 
 const createCard = (card, removeCard, likeCard) => {
@@ -6,6 +8,7 @@ const createCard = (card, removeCard, likeCard) => {
   const cardImage = cardElement.querySelector('.card__image');
   cardImage.src = card.link;
   cardImage.alt = card.name;
+  cardImage.addEventListener('click', getImageAttributes);
 
   const cardHeader = cardElement.querySelector('.card__title');
   cardHeader.textContent = card.name;

@@ -1,4 +1,5 @@
-import { handleEditForm, handleNewCardForm } from './forms.js';
+import { handleEditForm, handleNewCardForm } from './form.js';
+import { openFullImage } from './image.js';
 
 const closePopupOnEscape = (evt, popup) => {
   if (evt.key === 'Escape') {
@@ -21,6 +22,10 @@ const openPopup = (popup) => {
 
   if (popup.classList.contains('popup_type_new-card')) {
     handleNewCardForm(popup);
+  }
+
+  if (popup.classList.contains('popup_type_image')) {
+    openFullImage(popup);
   }
 
   popup.classList.add('popup_is-opened');
