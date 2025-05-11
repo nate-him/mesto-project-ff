@@ -1,8 +1,6 @@
-import { getImageAttributes } from './image.js';
-
 const cardTemplate = document.querySelector('#card-template').content;
 
-const createCard = (card, removeCard, likeCard) => {
+const createCard = (card, removeCard, likeCard, getImageAttributes) => {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
 
   const cardImage = cardElement.querySelector('.card__image');

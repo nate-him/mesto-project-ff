@@ -1,5 +1,4 @@
-import { handleEditForm, handleNewCardForm } from './form.js';
-import { openFullImage } from './image.js';
+import { handleEditForm, handleNewCardForm, openFullImage } from '../index.js';
 
 const closePopupOnEscape = (evt, popup) => {
   if (evt.key === 'Escape') {
@@ -14,6 +13,7 @@ const closePopupOnOverlay = (evt, popup) => {
 };
 
 const openPopup = (popup) => {
+  popup.classList.add('popup_is-animated');
   const closePopupButton = popup.querySelector('.popup__close');
 
   if (popup.classList.contains('popup_type_edit')) {
@@ -28,7 +28,7 @@ const openPopup = (popup) => {
     openFullImage(popup);
   }
 
-  popup.classList.add('popup_is-opened');
+  setTimeout(() => popup.classList.add('popup_is-opened'), 0);
   popup.addEventListener('click', (event) => closePopupOnOverlay(event, popup));
   closePopupButton.addEventListener('click', () => closePopup(popup));
   document.addEventListener('keydown', (event) =>
