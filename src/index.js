@@ -70,7 +70,7 @@ const handleNewCardForm = (popup) => {
         likeCard,
         getImageAttributes
       );
-      cardsContainer.append(newCard);
+      cardsContainer.prepend(newCard);
 
       placeNameInput.value = '';
       linkInput.value = '';
