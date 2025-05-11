@@ -1,20 +1,18 @@
 const cardTemplate = document.querySelector('#card-template').content;
 
-const createCard = (card, removeCard, likeCard, getImageAttributes) => {
+const createCard = (card, removeCard, likeCard, openFullImage) => {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
-
   const cardImage = cardElement.querySelector('.card__image');
+  const cardHeader = cardElement.querySelector('.card__title');
+  const deleteButton = cardElement.querySelector('.card__delete-button');
+  const likeButton = cardElement.querySelector('.card__like-button');
+
   cardImage.src = card.link;
   cardImage.alt = card.name;
-  cardImage.addEventListener('click', getImageAttributes);
-
-  const cardHeader = cardElement.querySelector('.card__title');
   cardHeader.textContent = card.name;
 
-  const deleteButton = cardElement.querySelector('.card__delete-button');
+  cardImage.addEventListener('click', () => openFullImage(card));
   deleteButton.addEventListener('click', removeCard);
-
-  const likeButton = cardElement.querySelector('.card__like-button');
   likeButton.addEventListener('click', likeCard);
 
   return cardElement;

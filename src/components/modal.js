@@ -1,46 +1,37 @@
-import { handleEditForm, handleNewCardForm, openFullImage } from '../index.js';
+let openedPopup;
 
-const closePopupOnEscape = (evt, popup) => {
+const closePopupOnEscape = (evt) => {
   if (evt.key === 'Escape') {
-    closePopup(popup);
+    closePopup();
   }
 };
 
-const closePopupOnOverlay = (evt, popup) => {
+const closePopupOnOverlay = (evt) => {
   if (evt.target === evt.currentTarget) {
-    closePopup(popup);
+    closePopup();
   }
 };
 
 const openPopup = (popup) => {
-  popup.classList.add('popup_is-animated');
-  const closePopupButton = popup.querySelector('.popup__close');
+  openedPopup = popup;
+  const closePopupButton = openedPopup.querySelector('.popup__close');
 
-  if (popup.classList.contains('popup_type_edit')) {
-    handleEditForm(popup);
-  }
+  openedPopup.classList.add('popup_is-animated');
+  setTimeout(() => openedPopup.classList.add('popup_is-opened'), 0);
 
-  if (popup.classList.contains('popup_type_new-card')) {
-    handleNewCardForm(popup);
-  }
-
-  if (popup.classList.contains('popup_type_image')) {
-    openFullImage(popup);
-  }
-
-  setTimeout(() => popup.classList.add('popup_is-opened'), 0);
-  popup.addEventListener('click', (event) => closePopupOnOverlay(event, popup));
-  closePopupButton.addEventListener('click', () => closePopup(popup));
-  document.addEventListener('keydown', (event) =>
-    closePopupOnEscape(event, popup)
-  );
+  openedPopup.addEventListener('click', closePopupOnOverlay);
+  closePopupButton.addEventListener('click', closePopup);
+  document.addEventListener('keydown', closePopupOnEscape);
 };
 
-const closePopup = (popup) => {
-  popup.classList.remove('popup_is-opened');
-  document.removeEventListener('keydown', (event) =>
-    closePopupOnEscape(event, popup)
-  );
+const closePopup = () => {
+  const closePopupButton = openedPopup.querySelector('.popup__close');
+
+  openedPopup.classList.remove('popup_is-opened');
+
+  openedPopup.removeEventListener('click', closePopupOnOverlay);
+  closePopupButton.removeEventListener('click', closePopup);
+  document.removeEventListener('keydown', closePopupOnEscape);
 };
 
 export { openPopup, closePopup };

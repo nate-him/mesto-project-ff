@@ -13,85 +13,75 @@ const editPopup = document.querySelector('.popup_type_edit');
 const newCardPopup = document.querySelector('.popup_type_new-card');
 const imagePopup = document.querySelector('.popup_type_image');
 
-const imageAttributes = {};
+const imageElement = document.querySelector('.popup__image');
+const imageCaption = document.querySelector('.popup__caption');
 
-const getImageAttributes = (evt) => {
-  const image = evt.currentTarget;
-  imageAttributes.name = image.alt;
-  imageAttributes.link = image.src;
+const editForm = document.forms['edit-profile'];
+const nameInput = editForm['name'];
+const jobInput = editForm['description'];
+
+const newCardForm = document.forms['new-place'];
+const placeNameInput = newCardForm['place-name'];
+const linkInput = newCardForm['link'];
+
+const profileTitle = document.querySelector('.profile__title');
+const profileDescription = document.querySelector('.profile__description');
+
+const handleEditFormSubmit = (evt) => {
+  evt.preventDefault();
+
+  if (nameInput.value !== '' && jobInput.value !== '') {
+    profileTitle.textContent = nameInput.value;
+    profileDescription.textContent = jobInput.value;
+
+    closePopup();
+    newCardForm.reset();
+  }
+};
+
+const handleNewCardFormSubmit = (evt) => {
+  evt.preventDefault();
+
+  if (placeNameInput.value !== '' && linkInput.value !== '') {
+    const newCard = createCard(
+      { name: placeNameInput.value, link: linkInput.value },
+      deleteCard,
+      likeCard,
+      openFullImage
+    );
+    cardsContainer.prepend(newCard);
+
+    closePopup();
+    newCardForm.reset();
+  }
+};
+
+const openFullImage = (card) => {
   openPopup(imagePopup);
+
+  imageElement.src = card.link;
+  imageElement.alt = card.name;
+  imageCaption.textContent = card.name;
 };
 
 const loadInitialCards = (cards) => {
   cards.forEach((card) => {
-    const newCard = createCard(card, deleteCard, likeCard, getImageAttributes);
+    const newCard = createCard(card, deleteCard, likeCard, openFullImage);
     cardsContainer.append(newCard);
   });
 };
 
-const handleEditForm = (popup) => {
-  const profileTitle = document.querySelector('.profile__title');
-  const profileDescription = document.querySelector('.profile__description');
-
-  const formElement = document.forms['edit-profile'];
-  const nameInput = formElement['name'];
-  const jobInput = formElement['description'];
-
+editProfileButton.addEventListener('click', () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
+  openPopup(editPopup);
+});
+addCardButton.addEventListener('click', () => {
+  newCardForm.reset();
+  openPopup(newCardPopup);
+});
 
-  const handleFormSubmit = (evt) => {
-    evt.preventDefault();
-
-    if (nameInput.value !== '' && jobInput.value !== '') {
-      profileTitle.textContent = nameInput.value;
-      profileDescription.textContent = jobInput.value;
-
-      closePopup(popup);
-    }
-  };
-
-  formElement.addEventListener('submit', handleFormSubmit);
-};
-
-const handleNewCardForm = (popup) => {
-  const formElement = document.forms['new-place'];
-  const placeNameInput = formElement['place-name'];
-  const linkInput = formElement['link'];
-
-  const handleFormSubmit = (evt) => {
-    evt.preventDefault();
-
-    if (placeNameInput.value !== '' && linkInput.value !== '') {
-      closePopup(popup);
-      const newCard = createCard(
-        { name: placeNameInput.value, link: linkInput.value },
-        deleteCard,
-        likeCard,
-        getImageAttributes
-      );
-      cardsContainer.prepend(newCard);
-
-      placeNameInput.value = '';
-      linkInput.value = '';
-    }
-  };
-
-  formElement.addEventListener('submit', handleFormSubmit);
-};
-
-const openFullImage = (popup) => {
-  const imageElement = popup.querySelector('.popup__image');
-  imageElement.src = imageAttributes.link;
-  imageElement.alt = imageAttributes.name;
-
-  const imageCaption = popup.querySelector('.popup__caption');
-  imageCaption.textContent = imageAttributes.name;
-};
-
-editProfileButton.addEventListener('click', () => openPopup(editPopup));
-addCardButton.addEventListener('click', () => openPopup(newCardPopup));
+editForm.addEventListener('submit', handleEditFormSubmit);
+newCardForm.addEventListener('submit', handleNewCardFormSubmit);
 
 loadInitialCards(initialCards);
-
-export { handleEditForm, handleNewCardForm, openFullImage };
