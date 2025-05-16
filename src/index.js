@@ -3,6 +3,7 @@ import './pages/index.css';
 import { initialCards } from './scripts/cards.js';
 import { createCard, deleteCard, likeCard } from './components/card.js';
 import { openPopup, closePopup } from './components/modal.js';
+import { enableValidation } from './components/validation.js';
 
 const cardsContainer = document.querySelector('.places__list');
 
@@ -85,3 +86,4 @@ editForm.addEventListener('submit', handleEditFormSubmit);
 newCardForm.addEventListener('submit', handleNewCardFormSubmit);
 
 loadInitialCards(initialCards);
+enableValidation();
