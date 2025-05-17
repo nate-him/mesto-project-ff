@@ -7,6 +7,7 @@ import {
   getProfileInfo,
   getInitialCards,
   updateProfileInfo,
+  postNewCard,
 } from './components/api.js';
 
 const validationConfig = {
@@ -61,15 +62,18 @@ const handleEditFormSubmit = (evt) => {
 const handleNewCardFormSubmit = (evt) => {
   evt.preventDefault();
 
-  if (placeNameInput.value !== '' && linkInput.value !== '') {
+  const name = placeNameInput.value;
+  const link = linkInput.value;
+  if (name !== '' && link !== '') {
     const newCard = createCard(
-      { name: placeNameInput.value, link: linkInput.value },
+      { name, link },
       deleteCard,
       likeCard,
       openFullImage
     );
     cardsContainer.prepend(newCard);
 
+    postNewCard({ name, link });
     closePopup();
     newCardForm.reset();
   }
