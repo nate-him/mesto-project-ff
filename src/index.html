@@ -8,9 +8,9 @@
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Mesto</title>
-    <link rel="icon" href="./images/favicon.ico" sizes="any" />
-    <link rel="icon" href="./images/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="./images/favicon.png" />
+    <link rel="icon" href="<%=require('./images/favicon.ico')%>" sizes="any" />
+    <link rel="icon" href="<%=require('./images/favicon.svg')%>" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="<%=require('./images/favicon.png')%>" />
   </head>
   <body class="page">
     <div class="page__content">
@@ -89,7 +89,11 @@
               name="place-name"
               class="popup__input popup__input_type_card-name"
               placeholder="Название"
+              minlength="2"
+              maxlength="30"
+              pattern="^[a-zA-Zа-яА-ЯёЁ \-]+$"
               required
+              data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
             />
             <span class="popup__error popup__error_card-name_input"></span>
             <input

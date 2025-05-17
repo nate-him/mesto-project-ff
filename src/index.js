@@ -5,6 +5,15 @@ import { createCard, deleteCard, likeCard } from './components/card.js';
 import { openPopup, closePopup } from './components/modal.js';
 import { enableValidation } from './components/validation.js';
 
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible',
+};
+
 const cardsContainer = document.querySelector('.places__list');
 
 const editProfileButton = document.querySelector('.profile__edit-button');
@@ -86,4 +95,4 @@ editForm.addEventListener('submit', handleEditFormSubmit);
 newCardForm.addEventListener('submit', handleNewCardFormSubmit);
 
 loadInitialCards(initialCards);
-enableValidation();
+enableValidation(validationConfig);
