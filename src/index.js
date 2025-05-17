@@ -108,7 +108,7 @@ Promise.all([getProfileInfo(), getInitialCards()]).then((data) => {
   profileAvatar.style.backgroundImage = `url('${data[0].avatar}')`;
 
   data[1].forEach((card) => {
-    const newCard = createCard(card, deleteCard, likeCard, openFullImage);
+    const newCard = createCard(card, deleteCard, likeCard, openFullImage, data[0]._id);
     cardsContainer.append(newCard);
   });
 });
