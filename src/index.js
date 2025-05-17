@@ -4,6 +4,7 @@ import { initialCards } from './scripts/cards.js';
 import { createCard, deleteCard, likeCard } from './components/card.js';
 import { openPopup, closePopup } from './components/modal.js';
 import { enableValidation } from './components/validation.js';
+import { getInitialCards } from './components/api.js';
 
 const validationConfig = {
   formSelector: '.popup__form',
@@ -94,5 +95,12 @@ addCardButton.addEventListener('click', () => {
 editForm.addEventListener('submit', handleEditFormSubmit);
 newCardForm.addEventListener('submit', handleNewCardFormSubmit);
 
-loadInitialCards(initialCards);
+// loadInitialCards(initialCards);
 enableValidation(validationConfig);
+
+getInitialCards().then((data) => {
+  data.forEach((card) => {
+    const newCard = createCard(card, deleteCard, likeCard, openFullImage);
+    cardsContainer.append(newCard);
+  });
+});
