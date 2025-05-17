@@ -16,7 +16,15 @@ const getProfileInfo = () => {
 
     return Promise.reject(`Ошибка: ${res.status}`);
   });
-}
+};
+
+const updateProfileInfo = (updatedInfo) => {
+  fetch(`${config.baseUrl}/users/me`, {
+    method: 'PATCH',
+    headers: config.headers,
+    body: JSON.stringify(updatedInfo),
+  });
+};
 
 const getInitialCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
@@ -30,4 +38,4 @@ const getInitialCards = () => {
   });
 };
 
-export { getInitialCards, getProfileInfo };
+export { getProfileInfo, getInitialCards, updateProfileInfo };

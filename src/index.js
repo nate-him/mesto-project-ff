@@ -3,7 +3,11 @@ import './pages/index.css';
 import { createCard, deleteCard, likeCard } from './components/card.js';
 import { openPopup, closePopup } from './components/modal.js';
 import { enableValidation } from './components/validation.js';
-import { getInitialCards, getProfileInfo } from './components/api.js';
+import {
+  getProfileInfo,
+  getInitialCards,
+  updateProfileInfo,
+} from './components/api.js';
 
 const validationConfig = {
   formSelector: '.popup__form',
@@ -41,12 +45,16 @@ const profileAvatar = document.querySelector('.profile__image');
 const handleEditFormSubmit = (evt) => {
   evt.preventDefault();
 
-  if (nameInput.value !== '' && jobInput.value !== '') {
-    profileTitle.textContent = nameInput.value;
-    profileDescription.textContent = jobInput.value;
+  const name = nameInput.value;
+  const about = jobInput.value;
 
+  if (name !== '' && about !== '') {
+    profileTitle.textContent = name;
+    profileDescription.textContent = about;
+
+    updateProfileInfo({ name, about });
     closePopup();
-    newCardForm.reset();
+    editForm.reset();
   }
 };
 
@@ -90,15 +98,13 @@ newCardForm.addEventListener('submit', handleNewCardFormSubmit);
 
 enableValidation(validationConfig);
 
-getInitialCards().then((data) => {
-  data.forEach((card) => {
+Promise.all([getProfileInfo(), getInitialCards()]).then((data) => {
+  profileTitle.textContent = data[0].name;
+  profileDescription.textContent = data[0].about;
+  profileAvatar.style.backgroundImage = `url('${data[0].avatar}')`;
+
+  data[1].forEach((card) => {
     const newCard = createCard(card, deleteCard, likeCard, openFullImage);
     cardsContainer.append(newCard);
   });
-});
-
-getProfileInfo().then((data) => {
-  profileTitle.textContent = data.name;
-  profileDescription.textContent = data.about;
-  profileAvatar.style.backgroundImage = `url('${data.avatar}')`;
 });
