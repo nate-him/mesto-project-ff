@@ -4,7 +4,7 @@ import { initialCards } from './scripts/cards.js';
 import { createCard, deleteCard, likeCard } from './components/card.js';
 import { openPopup, closePopup } from './components/modal.js';
 import { enableValidation } from './components/validation.js';
-import { getInitialCards } from './components/api.js';
+import { getInitialCards, getProfileInfo } from './components/api.js';
 
 const validationConfig = {
   formSelector: '.popup__form',
@@ -37,6 +37,7 @@ const linkInput = newCardForm['link'];
 
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
+const profileAvatar = document.querySelector('.profile__image');
 
 const handleEditFormSubmit = (evt) => {
   evt.preventDefault();
@@ -103,4 +104,10 @@ getInitialCards().then((data) => {
     const newCard = createCard(card, deleteCard, likeCard, openFullImage);
     cardsContainer.append(newCard);
   });
+});
+
+getProfileInfo().then((data) => {
+  profileTitle.textContent = data.name;
+  profileDescription.textContent = data.about;
+  profileAvatar.style.backgroundImage = `url('${data.avatar}')`;
 });
