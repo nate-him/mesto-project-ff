@@ -1,6 +1,5 @@
 import './pages/index.css';
 
-import { initialCards } from './scripts/cards.js';
 import { createCard, deleteCard, likeCard } from './components/card.js';
 import { openPopup, closePopup } from './components/modal.js';
 import { enableValidation } from './components/validation.js';
@@ -76,13 +75,6 @@ const openFullImage = (card) => {
   imageCaption.textContent = card.name;
 };
 
-const loadInitialCards = (cards) => {
-  cards.forEach((card) => {
-    const newCard = createCard(card, deleteCard, likeCard, openFullImage);
-    cardsContainer.append(newCard);
-  });
-};
-
 editProfileButton.addEventListener('click', () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
@@ -96,7 +88,6 @@ addCardButton.addEventListener('click', () => {
 editForm.addEventListener('submit', handleEditFormSubmit);
 newCardForm.addEventListener('submit', handleNewCardFormSubmit);
 
-// loadInitialCards(initialCards);
 enableValidation(validationConfig);
 
 getInitialCards().then((data) => {
