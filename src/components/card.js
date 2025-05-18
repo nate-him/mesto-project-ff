@@ -1,6 +1,6 @@
 const cardTemplate = document.querySelector('#card-template').content;
 
-const createCard = (card, removeCard, likeCard, openFullImage, ownerId) => {
+const createCard = (card, deleteCard, likeCard, openFullImage, ownerId) => {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImage = cardElement.querySelector('.card__image');
   const cardHeader = cardElement.querySelector('.card__title');
@@ -11,7 +11,12 @@ const createCard = (card, removeCard, likeCard, openFullImage, ownerId) => {
   if (ownerId !== card.owner._id) {
     deleteButton.classList.add('card__delete-button_hidden');
   } else {
-    deleteButton.addEventListener('click', removeCard);
+    deleteButton.addEventListener('click', (evt) => {
+      deleteCard(card._id);
+      const deleteButton = evt.currentTarget;
+      const deletedCard = deleteButton.closest('.card');
+      deletedCard.remove();
+    });
   }
 
   cardImage.src = card.link;
@@ -28,15 +33,9 @@ const createCard = (card, removeCard, likeCard, openFullImage, ownerId) => {
   return cardElement;
 };
 
-const deleteCard = (evt) => {
-  const deleteButton = evt.currentTarget;
-  const card = deleteButton.closest('.card');
-  card.remove();
-};
-
 const likeCard = (evt) => {
   const likeButton = evt.currentTarget;
   likeButton.classList.toggle('card__like-button_is-active');
 };
 
-export { createCard, deleteCard, likeCard };
+export { createCard, likeCard };
