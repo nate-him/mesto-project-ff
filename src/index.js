@@ -7,6 +7,7 @@ import {
   getProfileInfo,
   getInitialCards,
   updateProfileInfo,
+  updateProfileImage,
   postNewCard,
   deleteCard,
   addLikeCard,
@@ -29,6 +30,7 @@ const addCardButton = document.querySelector('.profile__add-button');
 
 const editPopup = document.querySelector('.popup_type_edit');
 const newCardPopup = document.querySelector('.popup_type_new-card');
+const updateAvatarPopup = document.querySelector('.popup_type_update-avatar');
 const imagePopup = document.querySelector('.popup_type_image');
 
 const imageElement = document.querySelector('.popup__image');
@@ -41,6 +43,9 @@ const jobInput = editForm['description'];
 const newCardForm = document.forms['new-place'];
 const placeNameInput = newCardForm['place-name'];
 const linkInput = newCardForm['link'];
+
+const updateAvatarForm = document.forms['update-avatar'];
+const avatarLinkInput = updateAvatarForm['avatar'];
 
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
@@ -61,6 +66,21 @@ const handleEditFormSubmit = (evt) => {
     editForm.reset();
   }
 };
+
+const handleUpdateAvatarFormSubmit = (evt) => {
+  evt.preventDefault();
+
+  const avatar = avatarLinkInput.value;
+
+  if (avatar !== '') {
+    updateProfileImage({ avatar }).then((data) => {
+      profileAvatar.style.backgroundImage = `url('${data.avatar}')`
+    });
+    closePopup();
+    updateAvatarForm.reset();
+  }
+};
+
 
 const handleNewCardFormSubmit = (evt) => {
   evt.preventDefault();
@@ -102,8 +122,13 @@ addCardButton.addEventListener('click', () => {
   openPopup(newCardPopup);
 });
 
+profileAvatar.addEventListener('click', () => {
+  openPopup(updateAvatarPopup);
+})
+
 editForm.addEventListener('submit', handleEditFormSubmit);
 newCardForm.addEventListener('submit', handleNewCardFormSubmit);
+updateAvatarForm.addEventListener('submit', handleUpdateAvatarFormSubmit);
 
 enableValidation(validationConfig);
 
