@@ -51,6 +51,11 @@ const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 const profileAvatar = document.querySelector('.profile__image');
 
+const renderLoadingButton = (formElement, submitButtonText) => {
+  const submitButton = formElement.querySelector('.popup__button');
+  submitButton.textContent = submitButtonText;
+};
+
 const handleEditFormSubmit = (evt) => {
   evt.preventDefault();
 
@@ -58,14 +63,15 @@ const handleEditFormSubmit = (evt) => {
   const about = jobInput.value;
 
   if (name !== '' && about !== '') {
+    renderLoadingButton(evt.target, 'Сохранение...');
     updateProfileInfo({ name, about })
       .then((data) => {
         profileTitle.textContent = data.name;
         profileDescription.textContent = data.about;
+        closePopup();
+        editForm.reset();
       })
       .catch((err) => console.log(err));
-    closePopup();
-    editForm.reset();
   }
 };
 
@@ -75,13 +81,14 @@ const handleUpdateAvatarFormSubmit = (evt) => {
   const avatar = avatarLinkInput.value;
 
   if (avatar !== '') {
+    renderLoadingButton(evt.target, 'Сохранение...');
     updateProfileImage({ avatar })
       .then((data) => {
         profileAvatar.style.backgroundImage = `url('${data.avatar}')`;
+        closePopup();
+        updateAvatarForm.reset();
       })
       .catch((err) => console.log(err));
-    closePopup();
-    updateAvatarForm.reset();
   }
 };
 
@@ -91,6 +98,7 @@ const handleNewCardFormSubmit = (evt) => {
   const name = placeNameInput.value;
   const link = linkInput.value;
   if (name !== '' && link !== '') {
+    renderLoadingButton(evt.target, 'Сохранение...');
     postNewCard({ name, link })
       .then((card) => {
         const newCard = createCard(
@@ -102,10 +110,10 @@ const handleNewCardFormSubmit = (evt) => {
           card.owner._id
         );
         cardsContainer.prepend(newCard);
+        closePopup();
+        newCardForm.reset();
       })
       .catch((err) => console.log(err));
-    closePopup();
-    newCardForm.reset();
   }
 };
 
