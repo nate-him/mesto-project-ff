@@ -1,6 +1,13 @@
 const cardTemplate = document.querySelector('#card-template').content;
 
-const createCard = (card, deleteCard, likeCard, openFullImage, ownerId) => {
+const createCard = (
+  card,
+  deleteCard,
+  likeCard,
+  unlikeCard,
+  openFullImage,
+  ownerId
+) => {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImage = cardElement.querySelector('.card__image');
   const cardHeader = cardElement.querySelector('.card__title');
@@ -12,30 +19,46 @@ const createCard = (card, deleteCard, likeCard, openFullImage, ownerId) => {
     deleteButton.classList.add('card__delete-button_hidden');
   } else {
     deleteButton.addEventListener('click', (evt) => {
-      deleteCard(card._id);
       const deleteButton = evt.currentTarget;
       const deletedCard = deleteButton.closest('.card');
-      deletedCard.remove();
+
+      deleteCard(card._id).then((data) => {
+        if ((data.message = 'Пост удалён')) {
+          deletedCard.remove();
+        }
+      });
     });
   }
 
   cardImage.src = card.link;
   cardImage.alt = card.name;
   cardHeader.textContent = card.name;
-  likeCounter.textContent = card.likes.length;
-  if (card.likes.includes(ownerId)) {
-    likeButton.classList.add('card__like-button_is-active');
-  }
+  updateLikes(card, likeButton, likeCounter, ownerId);
 
   cardImage.addEventListener('click', () => openFullImage(card));
-  likeButton.addEventListener('click', likeCard);
+  likeButton.addEventListener('click', (evt) => {
+    const likeButton = evt.currentTarget;
+    if (likeButton.classList.contains('card__like-button_is-active')) {
+      unlikeCard(card._id).then((data) => {
+        updateLikes(data, likeButton, likeCounter, ownerId);
+      });
+    } else {
+      likeCard(card._id).then((data) => {
+        updateLikes(data, likeButton, likeCounter, ownerId);
+      });
+    }
+  });
 
   return cardElement;
 };
 
-const likeCard = (evt) => {
-  const likeButton = evt.currentTarget;
-  likeButton.classList.toggle('card__like-button_is-active');
+const updateLikes = (card, likeButton, likeCounter, ownerId) => {
+  likeCounter.textContent = card.likes.length;
+  if (card.likes.map((like) => like._id).includes(ownerId)) {
+    likeButton.classList.add('card__like-button_is-active');
+  } else {
+    likeButton.classList.remove('card__like-button_is-active');
+  }
 };
 
-export { createCard, likeCard };
+export { createCard };

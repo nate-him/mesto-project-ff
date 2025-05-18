@@ -1,6 +1,6 @@
 import './pages/index.css';
 
-import { createCard, likeCard } from './components/card.js';
+import { createCard } from './components/card.js';
 import { openPopup, closePopup } from './components/modal.js';
 import { enableValidation } from './components/validation.js';
 import {
@@ -9,6 +9,8 @@ import {
   updateProfileInfo,
   postNewCard,
   deleteCard,
+  addLikeCard,
+  deleteLikeCard,
 } from './components/api.js';
 
 const validationConfig = {
@@ -70,7 +72,8 @@ const handleNewCardFormSubmit = (evt) => {
       const newCard = createCard(
         card,
         deleteCard,
-        likeCard,
+        addLikeCard,
+        deleteLikeCard,
         openFullImage,
         card.owner._id
       );
@@ -113,7 +116,8 @@ Promise.all([getProfileInfo(), getInitialCards()]).then((data) => {
     const newCard = createCard(
       card,
       deleteCard,
-      likeCard,
+      addLikeCard,
+      deleteLikeCard,
       openFullImage,
       data[0]._id
     );

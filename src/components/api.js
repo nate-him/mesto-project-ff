@@ -71,10 +71,38 @@ const deleteCard = (cardId) => {
   });
 };
 
+const addLikeCard = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'PUT',
+    headers: config.headers,
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+
+    return Promise.reject(`Ошибка: ${res.status}`);
+  });
+};
+
+const deleteLikeCard = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'DELETE',
+    headers: config.headers,
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+
+    return Promise.reject(`Ошибка: ${res.status}`);
+  });
+};
+
 export {
   getProfileInfo,
   getInitialCards,
   updateProfileInfo,
   postNewCard,
   deleteCard,
+  addLikeCard,
+  deleteLikeCard,
 };
