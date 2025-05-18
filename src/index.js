@@ -50,10 +50,10 @@ const handleEditFormSubmit = (evt) => {
   const about = jobInput.value;
 
   if (name !== '' && about !== '') {
-    profileTitle.textContent = name;
-    profileDescription.textContent = about;
-
-    updateProfileInfo({ name, about });
+    updateProfileInfo({ name, about }).then((data) => {
+      profileTitle.textContent = data.name;
+      profileDescription.textContent = data.about;
+    });
     closePopup();
     editForm.reset();
   }
@@ -65,15 +65,16 @@ const handleNewCardFormSubmit = (evt) => {
   const name = placeNameInput.value;
   const link = linkInput.value;
   if (name !== '' && link !== '') {
-    const newCard = createCard(
-      { name, link },
-      deleteCard,
-      likeCard,
-      openFullImage
-    );
-    cardsContainer.prepend(newCard);
-
-    postNewCard({ name, link });
+    postNewCard({ name, link }).then((card) => {
+      const newCard = createCard(
+        card,
+        deleteCard,
+        likeCard,
+        openFullImage,
+        card.owner._id
+      );
+      cardsContainer.prepend(newCard);
+    });
     closePopup();
     newCardForm.reset();
   }
@@ -108,7 +109,13 @@ Promise.all([getProfileInfo(), getInitialCards()]).then((data) => {
   profileAvatar.style.backgroundImage = `url('${data[0].avatar}')`;
 
   data[1].forEach((card) => {
-    const newCard = createCard(card, deleteCard, likeCard, openFullImage, data[0]._id);
+    const newCard = createCard(
+      card,
+      deleteCard,
+      likeCard,
+      openFullImage,
+      data[0]._id
+    );
     cardsContainer.append(newCard);
   });
 });
