@@ -9,7 +9,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Mesto</title>
     <link rel="icon" href="<%=require('./images/favicon.ico')%>" sizes="any" />
-    <link rel="icon" href="<%=require('./images/favicon.svg')%>" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="<%=require('./images/favicon.svg')%>"
+      type="image/svg+xml"
+    />
     <link rel="apple-touch-icon" href="<%=require('./images/favicon.png')%>" />
   </head>
   <body class="page">
@@ -25,7 +29,9 @@
         <section class="profile page__section">
           <div
             class="profile__image"
-            style="background-image: url('<%= require('./images/avatar.jpg') %>');"
+            style="
+              background-image: url('<%= require('./images/avatar.jpg') %>');
+            "
           ></div>
           <div class="profile__info">
             <h1 class="profile__title">Жак-Ив Кусто</h1>
@@ -122,11 +128,14 @@
 
     <template id="card-template">
       <li class="places__item card">
-        <img class="card__image" src="" alt="" loading="lazy"/>
+        <img class="card__image" src="" alt="" loading="lazy" />
         <button type="button" class="card__delete-button"></button>
         <div class="card__description">
           <h2 class="card__title"></h2>
-          <button type="button" class="card__like-button"></button>
+          <div class="card__like-container">
+            <button type="button" class="card__like-button"></button>
+            <span class="card__like-counter">&nbsp;</span>
+          </div>
         </div>
       </li>
     </template>

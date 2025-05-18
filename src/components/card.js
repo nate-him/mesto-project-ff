@@ -6,6 +6,7 @@ const createCard = (card, removeCard, likeCard, openFullImage, ownerId) => {
   const cardHeader = cardElement.querySelector('.card__title');
   const deleteButton = cardElement.querySelector('.card__delete-button');
   const likeButton = cardElement.querySelector('.card__like-button');
+  const likeCounter = cardElement.querySelector('.card__like-counter');
 
   if (ownerId !== card.owner._id) {
     deleteButton.classList.add('card__delete-button_hidden');
@@ -16,6 +17,10 @@ const createCard = (card, removeCard, likeCard, openFullImage, ownerId) => {
   cardImage.src = card.link;
   cardImage.alt = card.name;
   cardHeader.textContent = card.name;
+  likeCounter.textContent = card.likes.length;
+  if (card.likes.includes(ownerId)) {
+    likeButton.classList.add('card__like-button_is-active');
+  }
 
   cardImage.addEventListener('click', () => openFullImage(card));
   likeButton.addEventListener('click', likeCard);
