@@ -22,11 +22,13 @@ const createCard = (
       const deleteButton = evt.currentTarget;
       const deletedCard = deleteButton.closest('.card');
 
-      deleteCard(card._id).then((data) => {
-        if ((data.message = 'Пост удалён')) {
-          deletedCard.remove();
-        }
-      });
+      deleteCard(card._id)
+        .then((data) => {
+          if ((data.message = 'Пост удалён')) {
+            deletedCard.remove();
+          }
+        })
+        .catch((err) => console.log(err));
     });
   }
 
@@ -39,13 +41,17 @@ const createCard = (
   likeButton.addEventListener('click', (evt) => {
     const likeButton = evt.currentTarget;
     if (likeButton.classList.contains('card__like-button_is-active')) {
-      unlikeCard(card._id).then((data) => {
-        updateLikes(data, likeButton, likeCounter, ownerId);
-      });
+      unlikeCard(card._id)
+        .then((data) => {
+          updateLikes(data, likeButton, likeCounter, ownerId);
+        })
+        .catch((err) => console.log(err));
     } else {
-      likeCard(card._id).then((data) => {
-        updateLikes(data, likeButton, likeCounter, ownerId);
-      });
+      likeCard(card._id)
+        .then((data) => {
+          updateLikes(data, likeButton, likeCounter, ownerId);
+        })
+        .catch((err) => console.log(err));
     }
   });
 

@@ -58,10 +58,12 @@ const handleEditFormSubmit = (evt) => {
   const about = jobInput.value;
 
   if (name !== '' && about !== '') {
-    updateProfileInfo({ name, about }).then((data) => {
-      profileTitle.textContent = data.name;
-      profileDescription.textContent = data.about;
-    });
+    updateProfileInfo({ name, about })
+      .then((data) => {
+        profileTitle.textContent = data.name;
+        profileDescription.textContent = data.about;
+      })
+      .catch((err) => console.log(err));
     closePopup();
     editForm.reset();
   }
@@ -73,14 +75,15 @@ const handleUpdateAvatarFormSubmit = (evt) => {
   const avatar = avatarLinkInput.value;
 
   if (avatar !== '') {
-    updateProfileImage({ avatar }).then((data) => {
-      profileAvatar.style.backgroundImage = `url('${data.avatar}')`
-    });
+    updateProfileImage({ avatar })
+      .then((data) => {
+        profileAvatar.style.backgroundImage = `url('${data.avatar}')`;
+      })
+      .catch((err) => console.log(err));
     closePopup();
     updateAvatarForm.reset();
   }
 };
-
 
 const handleNewCardFormSubmit = (evt) => {
   evt.preventDefault();
@@ -88,17 +91,19 @@ const handleNewCardFormSubmit = (evt) => {
   const name = placeNameInput.value;
   const link = linkInput.value;
   if (name !== '' && link !== '') {
-    postNewCard({ name, link }).then((card) => {
-      const newCard = createCard(
-        card,
-        deleteCard,
-        addLikeCard,
-        deleteLikeCard,
-        openFullImage,
-        card.owner._id
-      );
-      cardsContainer.prepend(newCard);
-    });
+    postNewCard({ name, link })
+      .then((card) => {
+        const newCard = createCard(
+          card,
+          deleteCard,
+          addLikeCard,
+          deleteLikeCard,
+          openFullImage,
+          card.owner._id
+        );
+        cardsContainer.prepend(newCard);
+      })
+      .catch((err) => console.log(err));
     closePopup();
     newCardForm.reset();
   }
@@ -124,7 +129,7 @@ addCardButton.addEventListener('click', () => {
 
 profileAvatar.addEventListener('click', () => {
   openPopup(updateAvatarPopup);
-})
+});
 
 editForm.addEventListener('submit', handleEditFormSubmit);
 newCardForm.addEventListener('submit', handleNewCardFormSubmit);
@@ -132,20 +137,22 @@ updateAvatarForm.addEventListener('submit', handleUpdateAvatarFormSubmit);
 
 enableValidation(validationConfig);
 
-Promise.all([getProfileInfo(), getInitialCards()]).then((data) => {
-  profileTitle.textContent = data[0].name;
-  profileDescription.textContent = data[0].about;
-  profileAvatar.style.backgroundImage = `url('${data[0].avatar}')`;
+Promise.all([getProfileInfo(), getInitialCards()])
+  .then((data) => {
+    profileTitle.textContent = data[0].name;
+    profileDescription.textContent = data[0].about;
+    profileAvatar.style.backgroundImage = `url('${data[0].avatar}')`;
 
-  data[1].forEach((card) => {
-    const newCard = createCard(
-      card,
-      deleteCard,
-      addLikeCard,
-      deleteLikeCard,
-      openFullImage,
-      data[0]._id
-    );
-    cardsContainer.append(newCard);
-  });
-});
+    data[1].forEach((card) => {
+      const newCard = createCard(
+        card,
+        deleteCard,
+        addLikeCard,
+        deleteLikeCard,
+        openFullImage,
+        data[0]._id
+      );
+      cardsContainer.append(newCard);
+    });
+  })
+  .catch((err) => console.log(err));
