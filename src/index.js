@@ -2,7 +2,7 @@ import './pages/index.css';
 
 import { createCard } from './components/card.js';
 import { openPopup, closePopup } from './components/modal.js';
-import { enableValidation } from './components/validation.js';
+import { clearValidation, enableValidation } from './components/validation.js';
 import {
   getProfileInfo,
   getInitialCards,
@@ -58,18 +58,19 @@ const renderLoadingButton = (formElement, submitButtonText) => {
 
 const handleEditFormSubmit = (evt) => {
   evt.preventDefault();
+  const form = evt.target;
 
   const name = nameInput.value;
   const about = jobInput.value;
 
   if (name !== '' && about !== '') {
-    renderLoadingButton(evt.target, 'Сохранение...');
+    renderLoadingButton(form, 'Сохранение...');
     updateProfileInfo({ name, about })
       .then((data) => {
         profileTitle.textContent = data.name;
         profileDescription.textContent = data.about;
         closePopup();
-        editForm.reset();
+        form.reset();
       })
       .catch((err) => console.log(err));
   }
@@ -78,15 +79,16 @@ const handleEditFormSubmit = (evt) => {
 const handleUpdateAvatarFormSubmit = (evt) => {
   evt.preventDefault();
 
+  const form = evt.target;
   const avatar = avatarLinkInput.value;
 
   if (avatar !== '') {
-    renderLoadingButton(evt.target, 'Сохранение...');
+    renderLoadingButton(form, 'Сохранение...');
     updateProfileImage({ avatar })
       .then((data) => {
         profileAvatar.style.backgroundImage = `url('${data.avatar}')`;
         closePopup();
-        updateAvatarForm.reset();
+        form.reset();
       })
       .catch((err) => console.log(err));
   }
@@ -94,11 +96,12 @@ const handleUpdateAvatarFormSubmit = (evt) => {
 
 const handleNewCardFormSubmit = (evt) => {
   evt.preventDefault();
+  const form = evt.target;
 
   const name = placeNameInput.value;
   const link = linkInput.value;
   if (name !== '' && link !== '') {
-    renderLoadingButton(evt.target, 'Сохранение...');
+    renderLoadingButton(form, 'Сохранение...');
     postNewCard({ name, link })
       .then((card) => {
         const newCard = createCard(
@@ -111,7 +114,7 @@ const handleNewCardFormSubmit = (evt) => {
         );
         cardsContainer.prepend(newCard);
         closePopup();
-        newCardForm.reset();
+        form.reset();
       })
       .catch((err) => console.log(err));
   }
@@ -128,14 +131,21 @@ const openFullImage = (card) => {
 editProfileButton.addEventListener('click', () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
+  renderLoadingButton(editForm, 'Сохранить');
+  clearValidation(editForm, validationConfig);
   openPopup(editPopup);
 });
 addCardButton.addEventListener('click', () => {
+  renderLoadingButton(newCardForm, 'Сохранить');
   newCardForm.reset();
+  clearValidation(newCardForm, validationConfig);
   openPopup(newCardPopup);
 });
 
 profileAvatar.addEventListener('click', () => {
+  renderLoadingButton(updateAvatarForm, 'Сохранить');
+  updateAvatarForm.reset();
+  clearValidation(updateAvatarForm, validationConfig);
   openPopup(updateAvatarPopup);
 });
 
