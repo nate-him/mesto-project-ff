@@ -51,9 +51,13 @@ const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 const profileAvatar = document.querySelector('.profile__image');
 
-const renderLoadingButton = (formElement, submitButtonText) => {
+const renderLoadingButton = (formElement, isLoading) => {
   const submitButton = formElement.querySelector('.popup__button');
-  submitButton.textContent = submitButtonText;
+  if (isLoading) {
+    submitButton.textContent = 'Сохранение...';
+  } else {
+    submitButton.textContent = 'Сохранить';
+  }
 };
 
 const handleEditFormSubmit = (evt) => {
@@ -64,7 +68,7 @@ const handleEditFormSubmit = (evt) => {
   const about = jobInput.value;
 
   if (name !== '' && about !== '') {
-    renderLoadingButton(form, 'Сохранение...');
+    renderLoadingButton(form, true);
     updateProfileInfo({ name, about })
       .then((data) => {
         profileTitle.textContent = data.name;
@@ -72,7 +76,8 @@ const handleEditFormSubmit = (evt) => {
         closePopup();
         form.reset();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => renderLoadingButton(form, false));
   }
 };
 
@@ -83,14 +88,15 @@ const handleUpdateAvatarFormSubmit = (evt) => {
   const avatar = avatarLinkInput.value;
 
   if (avatar !== '') {
-    renderLoadingButton(form, 'Сохранение...');
+    renderLoadingButton(form, true);
     updateProfileImage({ avatar })
       .then((data) => {
         profileAvatar.style.backgroundImage = `url('${data.avatar}')`;
         closePopup();
         form.reset();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => renderLoadingButton(form, false));
   }
 };
 
@@ -101,7 +107,7 @@ const handleNewCardFormSubmit = (evt) => {
   const name = placeNameInput.value;
   const link = linkInput.value;
   if (name !== '' && link !== '') {
-    renderLoadingButton(form, 'Сохранение...');
+    renderLoadingButton(form, true);
     postNewCard({ name, link })
       .then((card) => {
         const newCard = createCard(
@@ -116,7 +122,8 @@ const handleNewCardFormSubmit = (evt) => {
         closePopup();
         form.reset();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => renderLoadingButton(form, false));
   }
 };
 
@@ -131,19 +138,17 @@ const openFullImage = (card) => {
 editProfileButton.addEventListener('click', () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
-  renderLoadingButton(editForm, 'Сохранить');
   clearValidation(editForm, validationConfig);
   openPopup(editPopup);
 });
+
 addCardButton.addEventListener('click', () => {
-  renderLoadingButton(newCardForm, 'Сохранить');
   newCardForm.reset();
   clearValidation(newCardForm, validationConfig);
   openPopup(newCardPopup);
 });
 
 profileAvatar.addEventListener('click', () => {
-  renderLoadingButton(updateAvatarForm, 'Сохранить');
   updateAvatarForm.reset();
   clearValidation(updateAvatarForm, validationConfig);
   openPopup(updateAvatarPopup);
