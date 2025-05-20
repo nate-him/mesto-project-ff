@@ -2,6 +2,7 @@ const showInputError = (formElement, inputElement, validationConfig) => {
   const errorElement = formElement.querySelector(
     `.popup__error_${inputElement.id}`
   );
+
   inputElement.classList.add(validationConfig.inputErrorClass);
   errorElement.textContent = inputElement.validationMessage;
   errorElement.classList.add(validationConfig.errorClass);
@@ -11,6 +12,7 @@ const hideInputError = (formElement, inputElement, validationConfig) => {
   const errorElement = formElement.querySelector(
     `.popup__error_${inputElement.id}`
   );
+
   inputElement.classList.remove(validationConfig.inputErrorClass);
   errorElement.classList.remove(validationConfig.errorClass);
   errorElement.textContent = '';
@@ -51,6 +53,7 @@ const setEventListeners = (formElement, validationConfig) => {
   const buttonElement = formElement.querySelector(
     validationConfig.submitButtonSelector
   );
+
   toggleButtonState(inputList, buttonElement, validationConfig);
 
   inputList.forEach((inputElement) => {
@@ -68,7 +71,9 @@ const clearValidation = (formElement, validationConfig) => {
   const buttonElement = formElement.querySelector(
     validationConfig.submitButtonSelector
   );
+
   toggleButtonState(inputList, buttonElement, validationConfig);
+
   inputList.forEach((inputElement) => {
     hideInputError(formElement, inputElement, validationConfig);
     inputElement.setCustomValidity('');
@@ -79,10 +84,8 @@ const enableValidation = (validationConfig) => {
   const formList = Array.from(
     document.querySelectorAll(validationConfig.formSelector)
   );
+
   formList.forEach((formElement) => {
-    formElement.addEventListener('submit', (evt) => {
-      evt.preventDefault();
-    });
     setEventListeners(formElement, validationConfig);
   });
 };
