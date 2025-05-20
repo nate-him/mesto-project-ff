@@ -62,23 +62,19 @@ const renderLoadingButton = (formElement, isLoading) => {
 
 const handleEditFormSubmit = (evt) => {
   evt.preventDefault();
-  const form = evt.target;
-
   const name = nameInput.value;
   const about = jobInput.value;
 
-  if (name !== '' && about !== '') {
-    renderLoadingButton(form, true);
-    updateProfileInfo({ name, about })
-      .then((data) => {
-        profileTitle.textContent = data.name;
-        profileDescription.textContent = data.about;
-        closePopup();
-        form.reset();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => renderLoadingButton(form, false));
-  }
+  renderLoadingButton(form, true);
+  updateProfileInfo({ name, about })
+    .then((data) => {
+      profileTitle.textContent = data.name;
+      profileDescription.textContent = data.about;
+      closePopup();
+      form.reset();
+    })
+    .catch((err) => console.log(err))
+    .finally(() => renderLoadingButton(form, false));
 };
 
 const handleUpdateAvatarFormSubmit = (evt) => {
@@ -87,17 +83,15 @@ const handleUpdateAvatarFormSubmit = (evt) => {
   const form = evt.target;
   const avatar = avatarLinkInput.value;
 
-  if (avatar !== '') {
-    renderLoadingButton(form, true);
-    updateProfileImage({ avatar })
-      .then((data) => {
-        profileAvatar.style.backgroundImage = `url('${data.avatar}')`;
-        closePopup();
-        form.reset();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => renderLoadingButton(form, false));
-  }
+  renderLoadingButton(form, true);
+  updateProfileImage({ avatar })
+    .then((data) => {
+      profileAvatar.style.backgroundImage = `url('${data.avatar}')`;
+      closePopup();
+      form.reset();
+    })
+    .catch((err) => console.log(err))
+    .finally(() => renderLoadingButton(form, false));
 };
 
 const handleNewCardFormSubmit = (evt) => {
@@ -106,25 +100,24 @@ const handleNewCardFormSubmit = (evt) => {
 
   const name = placeNameInput.value;
   const link = linkInput.value;
-  if (name !== '' && link !== '') {
-    renderLoadingButton(form, true);
-    postNewCard({ name, link })
-      .then((card) => {
-        const newCard = createCard(
-          card,
-          deleteCard,
-          addLikeCard,
-          deleteLikeCard,
-          openFullImage,
-          card.owner._id
-        );
-        cardsContainer.prepend(newCard);
-        closePopup();
-        form.reset();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => renderLoadingButton(form, false));
-  }
+
+  renderLoadingButton(form, true);
+  postNewCard({ name, link })
+    .then((card) => {
+      const newCard = createCard(
+        card,
+        deleteCard,
+        addLikeCard,
+        deleteLikeCard,
+        openFullImage,
+        card.owner._id
+      );
+      cardsContainer.prepend(newCard);
+      closePopup();
+      form.reset();
+    })
+    .catch((err) => console.log(err))
+    .finally(() => renderLoadingButton(form, false));
 };
 
 const openFullImage = (card) => {
