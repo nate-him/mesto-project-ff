@@ -18,14 +18,11 @@ const createCard = (
   if (ownerId !== card.owner._id) {
     deleteButton.classList.add('card__delete-button_hidden');
   } else {
-    deleteButton.addEventListener('click', (evt) => {
-      const deleteButton = evt.currentTarget;
-      const deletedCard = deleteButton.closest('.card');
-
+    deleteButton.addEventListener('click', () => {
       deleteCard(card._id)
         .then((data) => {
-          if ((data.message = 'Пост удалён')) {
-            deletedCard.remove();
+          if (data.message === 'Пост удалён') {
+            cardElement.remove();
           }
         })
         .catch((err) => console.log(err));
