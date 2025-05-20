@@ -51,8 +51,7 @@ const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 const profileAvatar = document.querySelector('.profile__image');
 
-const renderLoadingButton = (formElement, isLoading) => {
-  const submitButton = formElement.querySelector('.popup__button');
+const renderLoadingButton = (isLoading, submitButton) => {
   if (isLoading) {
     submitButton.textContent = 'Сохранение...';
   } else {
@@ -65,43 +64,41 @@ const handleEditFormSubmit = (evt) => {
   const name = nameInput.value;
   const about = jobInput.value;
 
-  renderLoadingButton(form, true);
+  renderLoadingButton(true, evt.submitter);
   updateProfileInfo({ name, about })
     .then((data) => {
       profileTitle.textContent = data.name;
       profileDescription.textContent = data.about;
       closePopup();
-      form.reset();
+      editForm.reset();
     })
     .catch((err) => console.log(err))
-    .finally(() => renderLoadingButton(form, false));
+    .finally(() => renderLoadingButton(false, evt.submitter));
 };
 
 const handleUpdateAvatarFormSubmit = (evt) => {
   evt.preventDefault();
 
-  const form = evt.target;
   const avatar = avatarLinkInput.value;
 
-  renderLoadingButton(form, true);
+  renderLoadingButton(true, evt.submitter);
   updateProfileImage({ avatar })
     .then((data) => {
       profileAvatar.style.backgroundImage = `url('${data.avatar}')`;
       closePopup();
-      form.reset();
+      updateAvatarForm.reset();
     })
     .catch((err) => console.log(err))
-    .finally(() => renderLoadingButton(form, false));
+    .finally(() => renderLoadingButton(false, evt.submitter));
 };
 
 const handleNewCardFormSubmit = (evt) => {
   evt.preventDefault();
-  const form = evt.target;
 
   const name = placeNameInput.value;
   const link = linkInput.value;
 
-  renderLoadingButton(form, true);
+  renderLoadingButton(true, evt.submitter);
   postNewCard({ name, link })
     .then((card) => {
       const newCard = createCard(
@@ -114,10 +111,10 @@ const handleNewCardFormSubmit = (evt) => {
       );
       cardsContainer.prepend(newCard);
       closePopup();
-      form.reset();
+      newCardForm.reset();
     })
     .catch((err) => console.log(err))
-    .finally(() => renderLoadingButton(form, false));
+    .finally(() => renderLoadingButton(false, evt.submitter));
 };
 
 const openFullImage = (card) => {
