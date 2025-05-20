@@ -33,6 +33,10 @@ const newCardPopup = document.querySelector('.popup_type_new-card');
 const updateAvatarPopup = document.querySelector('.popup_type_update-avatar');
 const imagePopup = document.querySelector('.popup_type_image');
 
+const closePopupButtonsList = Array.from(
+  document.querySelectorAll('.popup__close')
+);
+
 const imageElement = document.querySelector('.popup__image');
 const imageCaption = document.querySelector('.popup__caption');
 
@@ -143,6 +147,13 @@ profileAvatar.addEventListener('click', () => {
   clearValidation(updateAvatarForm, validationConfig);
   openPopup(updateAvatarPopup);
 });
+
+closePopupButtonsList.forEach((closePopupButton) =>
+  closePopupButton.addEventListener('click', closePopup)
+);
+[newCardPopup, editPopup, imagePopup, updateAvatarPopup].forEach((popup) =>
+  popup.classList.add('popup_is-animated')
+);
 
 editForm.addEventListener('submit', handleEditFormSubmit);
 newCardForm.addEventListener('submit', handleNewCardFormSubmit);
